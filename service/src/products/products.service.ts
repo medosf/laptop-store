@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable , NotFoundException} from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 
 export interface Product {
@@ -31,6 +31,9 @@ export class ProductsService {
   }
 
   findOne(id: number): Product | undefined {
-    return this.products.find(product => product.id === id);
-  }
+    const product = this.products.find(product => product.id === id);
+    if (!product) {
+      throw new NotFoundException('Product not found');
+    }
+    return product;  }
 }
